@@ -32,3 +32,16 @@ You can verify that with:
 ```
 kubectl get deployment -n cnpg-system cnpg-controller-manager
 ```
+
+Create a Postgres instance:
+
+```
+kubectl apply -f postgres/initdb.yaml
+```
+
+3. Install MariaDB Operator:
+
+You can install the latest operator manifest for this minor release as follows:
+
+```
+
