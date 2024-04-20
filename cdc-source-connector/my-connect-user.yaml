@@ -1,0 +1,54 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: my-connect
+  labels:
+    strimzi.io/cluster: my-cluster
+spec:
+  authentication:
+    type: scram-sha-512
+  authorization:
+    type: simple
+    acls:
+      # access to offset.storage.topic
+      - resource:
+          type: topic
+          name: connect-cluster-offsets
+          patternType: literal
+        operations:
+          - Create
+          - Describe
+          - Read
+          - Write
+        host: "*"
+      # access to status.storage.topic
+      - resource:
+          type: topic
+          name: connect-cluster-status
+          patternType: literal
+        operations:
+          - Create
+          - Describe
+          - Read
+          - Write
+        host: "*"
+      # access to config.storage.topic
+      - resource:
+          type: topic
+          name: connect-cluster-configs
+          patternType: literal
+        operations:
+          - Create
+          - Describe
+          - Read
+          - Write
+        host: "*"
+      # cluster group
+      - resource:
+          type: group
+          name: connect-cluster
+          patternType: literal
+        operations:
+          - Read
+        host: "*"
+---

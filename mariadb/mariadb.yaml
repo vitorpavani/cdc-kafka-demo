@@ -1,15 +1,39 @@
-apiVersion: k8s.mariadb.com/v1alpha1
-kind: MariaDB
+apiVersion: v1
+kind: Service
 metadata:
-  name: mariadb
+  name: mysql
 spec:
-  storage:
-    size: 1Gi
-
-  myCnf: |
-    [mariadb]
-    bind-address=*
-    default_storage_engine=InnoDB
-    binlog_format=row
-    innodb_autoinc_lock_mode=2
-    max_allowed_packet=256M
+  ports:
+    - port: 3306
+  selector:
+    app: mysql
+  clusterIP: None
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - image: quay.io/debezium/example-mysql:2.4
+          name: mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: debezium
+            - name: MYSQL_USER
+              value: mysqluser
+            - name: MYSQL_PASSWORD
+              value: mysqlpw
+          ports:
+            - containerPort: 3306
+              name: mysql

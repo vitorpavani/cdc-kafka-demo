@@ -44,14 +44,9 @@ kubectl apply -f postgres/initdb.yaml
 You can install the latest operator manifest for this minor release as follows:
 
 ```
-# Install the MariaDB CRDs
-kubectl apply -f mariadb/crd.yaml
-
-# Install the MariaDB Operator
-kubectl apply -f mariadb/mariadb-operator.yaml
-
 # Create a MariaDB instance:
-kubectl apply -f mariadb/initdb.yaml
+kubectl create namespace mariadb
+kubectl -n mariadb apply -f mariadb/mariadb.yaml
 ```
 
 4. Install Kafka Operator:
@@ -60,37 +55,11 @@ You can install the operator manifest for this minor release as follows:
 
 ```
 # Install the Kafka CRDs
-kubectl apply -f kafka/kafka-crd.yaml
-# Install the Kafka Operator
-kubectl apply -f kafka/kafka-operator.yaml
-# Create a Kafka instance:
-kubectl apply -f kafka/kafka-persistent-single.yaml
+kubectl create namespace kafka
+kubectl apply -f kafka/
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
--------------------------------------------------------------------------------------------------
+---
 
 PARTE 1
 
